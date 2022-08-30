@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--should add '/js/' to indicate the accurate path-->
+    <script src="/js/myJquery.js"></script>
+    <title>Page name: Personal Information</title>
+</head>
+<body>
+<h1>h1:Personal Information</h1>
+<br>
+<h2>h2:</h2>
+<a href="https://www.bing.com">bing</a>
+<br>
+<img src="/images/visualizingpoisoning.png" alt="https://www.bing.com" width="158" height="158">
+<br>
+<br>
+<form id="infoForm">
+    <label for="fname">Name:</label><br>
+    <input type="text" id="fname" value="John"><br><br>
+    <label for="fnumber">Phone number:</label><br>
+    <input type="text" id="fnumber" value="15858588888"><br><br>
+    <input type="submit" value="Submit">
+
+    <button type="button">clike me to submit data</button>
+    <p id="demo"></p>
+</form>
+
+<script>
+    $(document).ready(function () {
+        //alert("hello")
+        //$("#infoForm").hide();
+        /*don't know why this whole document have not been hidden*/
+        //$(this).hide();
+
+    })
+
+
+    $(document).ready(function () {
+        //alert("document ready function")
+        $("#infoForm").submit(function () {
+            //alert("click submit")
+            // Prevent the form from submitting via the browser.
+            event.preventDefault();
+            searchViaAjax();
+
+        });
+    });
+
+    function searchViaAjax() {
+        //var data = {}
+        //data["query"] = $("#query").val();
+
+        //alert("ajax request")
+        $.ajax({
+            type: "GET",
+            //crossDomain: true,  //fix Access-Control-Allow-Origin
+            contentType: "application/json",
+            url: "http://localhost:8888/greeting",
+            //headers: {  'Access-Control-Allow-Origin': 'http://localhost:63343/' },
+            /*headers: {
+                'Access-Control-Allow-Credentials' : true,
+                'Access-Control-Allow-Origin':'*',
+                'Access-Control-Allow-Methods':'GET',
+                'Access-Control-Allow-Headers':'application/json',
+            },*/
+            //data : JSON.stringify(data),
+            dataType: 'json',
+            //dataType: 'jsonp',   //fix Access-Control-Allow-Origin
+            timeout: 100000,
+
+            success: function (data) {
+                //console.log("SUCCESS: ", data);
+                //display(data);
+                alert("Success:" + JSON.stringify(data));
+            },
+            error: function (e) {
+                //console.log("ERROR: ", e);
+                //display(e);
+                alert("Error:" + e);
+            },
+            done: function (e) {
+                console.log("DONE");
+            }
+        });
+    }
+
+</script>
+
+</body>
+</html>
