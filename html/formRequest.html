@@ -23,23 +23,12 @@
     <input type="submit" value="Submit">
 
     <button type="button">clike me to submit data</button>
-    <p id="demo"></p>
+    <p id="demo">明月几时有，把酒问青天</p>
 </form>
 
 <script>
     $(document).ready(function () {
-        //alert("hello")
-        //$("#infoForm").hide();
-        /*don't know why this whole document have not been hidden*/
-        //$(this).hide();
-
-    })
-
-
-    $(document).ready(function () {
-        //alert("document ready function")
         $("#infoForm").submit(function () {
-            //alert("click submit")
             // Prevent the form from submitting via the browser.
             event.preventDefault();
             searchViaAjax();
@@ -48,25 +37,21 @@
     });
 
     function searchViaAjax() {
-        //var data = {}
-        //data["query"] = $("#query").val();
+        var data = {}
+        data["name"] = $("#fname").val();
+        data["phone"] = $("#fnumber").val();
 
-        //alert("ajax request")
+        var jsonData = {
+            name: $("#fname").val(),
+            phone: $("#fnumber").val(),
+        }
+
         $.ajax({
             type: "GET",
-            //crossDomain: true,  //fix Access-Control-Allow-Origin
             contentType: "application/json",
             url: "http://localhost:8888/greeting",
-            //headers: {  'Access-Control-Allow-Origin': 'http://localhost:63343/' },
-            /*headers: {
-                'Access-Control-Allow-Credentials' : true,
-                'Access-Control-Allow-Origin':'*',
-                'Access-Control-Allow-Methods':'GET',
-                'Access-Control-Allow-Headers':'application/json',
-            },*/
-            //data : JSON.stringify(data),
+            data: JSON.stringify(jsonData), //need add "param="+JSON.stringify(jsonData) 否则后端接收不到参数 或者在spring controller上加@ResponseBody
             dataType: 'json',
-            //dataType: 'jsonp',   //fix Access-Control-Allow-Origin
             timeout: 100000,
 
             success: function (data) {
@@ -77,7 +62,7 @@
             error: function (e) {
                 //console.log("ERROR: ", e);
                 //display(e);
-                alert("Error:" + e);
+                alert("Error:" + JSON.stringify(e));
             },
             done: function (e) {
                 console.log("DONE");
