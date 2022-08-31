@@ -5,34 +5,82 @@
     <!--should add '/js/' to indicate the accurate path-->
     <script src="/js/myJquery.js"></script>
     <title>Page name: Personal Information</title>
+    <style>
+        body {
+            background-color: powderblue;
+        }
+
+        h1 {
+            color: blue;
+        }
+
+        /*p    {color: red;}*/
+    </style>
 </head>
 <body>
-<h1>h1:Personal Information</h1>
+<h1 style="background-color:plum;">h1:Personal Information</h1>
 <br>
 <h2>h2:</h2>
-<a href="https://www.bing.com">bing</a>
+<mark>
+    <a href="https://www.bing.com">bing</a>
+</mark>
+
 <br>
 <img src="/images/visualizingpoisoning.png" alt="https://www.bing.com" width="158" height="158">
 <br>
 <br>
 <form id="infoForm">
-    <label for="fname">Name:</label><br>
+    <label style="color:hotpink;" for="fname">Name:</label><br>
     <input type="text" id="fname" value="John"><br><br>
     <label for="fnumber">Phone number:</label><br>
     <input type="text" id="fnumber" value="15858588888"><br><br>
     <input type="submit" value="Submit">
 
-    <button type="button">clike me to submit data</button>
-    <p id="demo">明月几时有，把酒问青天</p>
+    <button type="button" id="fbutton">clike me to submit data</button>
+    <p id="demo" title="tip" style=" border: 6px solid powderblue;">明月几时有，把酒问青天</p>
 </form>
 
+<h2 style="font-size:50px;" style="color:pink;" style="text-align:center;">another h2</h2>
+<p style="font-family:courier;" style="font-size:150%;" style="text-align:center;">
+    <b>明月几时有
+        把酒问青天</b>
+</p>
+<hr>
+
+<p>
+    我欲乘风归去
+    又恐琼楼玉宇
+</p>
+<hr>
+
+<p style="color:hotpink;" style="padding: 30px;">
+    道可道也①，非恒道也②。名可名也③，非恒名也。无名④，万物之始也；有名⑤，万物之母也⑥。故恒无欲也⑦，以观其眇⑧；
+    <br>恒有欲也，以观其所徼⑨。两者同出，异名同谓⑩。玄之又玄⑾，众眇之门⑿。
+</p>
+<hr>
+
+<pre>
+            念奴娇·赤壁怀古
+
+    大江东去，浪淘尽，千古风流人物。
+
+    故垒西边，人道是：三国周郎赤壁。乱石崩云，惊涛裂岸，卷起千堆雪。江山如画，一时多少豪杰。
+
+    遥想公瑾当年，小乔初嫁了，雄姿英发。羽扇纶巾，谈笑间、强虏灰飞烟灭⒃。
+
+    故国神游，多情应笑我，早生华发。人间如梦，一尊还酹江月。
+</pre>
 <script>
     $(document).ready(function () {
         $("#infoForm").submit(function () {
             // Prevent the form from submitting via the browser.
             event.preventDefault();
             searchViaAjax();
+            postViaAjax();
+        });
 
+        $("#fbutton").click(function () {
+            searchViaAjax();
         });
     });
 
@@ -51,6 +99,40 @@
             contentType: "application/json",
             url: "http://localhost:8888/greeting",
             data: JSON.stringify(jsonData), //need add "param="+JSON.stringify(jsonData) 否则后端接收不到参数 或者在spring controller上加@ResponseBody
+            dataType: 'json',
+            timeout: 100000,
+
+            success: function (data) {
+                console.log("SUCCESS: ", JSON.stringify(data));
+                //display(data);
+                alert("Success:" + JSON.stringify(data));
+            },
+            error: function (e) {
+                //console.log("ERROR: ", e);
+                //display(e);
+                alert("Error:" + JSON.stringify(e));
+            },
+            done: function (e) {
+                console.log("DONE");
+            }
+        });
+    }
+
+    function postViaAjax() {
+        var data = {}
+        data["name"] = $("#fname").val();
+        data["phone"] = $("#fnumber").val();
+
+        var jsonData = {
+            name: $("#fname").val(),
+            phone: $("#fnumber").val(),
+        }
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "http://localhost:8888/addPerson",
+            data: JSON.stringify(data), //need add "param="+JSON.stringify(jsonData) 否则后端接收不到参数 或者在spring controller上加@ResponseBody
             dataType: 'json',
             timeout: 100000,
 
